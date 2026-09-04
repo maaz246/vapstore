@@ -390,11 +390,20 @@ details[open]>summary.header__menu-item .icon-caret {
   box-shadow: none !important;
 }
 
+/* Disable Dawn full-card stretched-link pseudo-element so it cannot block button clicks */
+.product-card-wrapper .card__heading a::after,
+.product-card-wrapper .card a::after,
+.product-card-wrapper .card--card .card__heading a::after,
+.product-card-wrapper .card--standard .card__heading a::after {
+  display: none !important;
+}
+
 .product-card-wrapper .card__inner {
   background-color: #f0f2f5 !important;
   border-radius: 20px !important;
   overflow: hidden !important;
   position: relative !important;
+  z-index: 2 !important;
   border: none !important;
   box-shadow: none !important;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease !important;
@@ -402,6 +411,18 @@ details[open]>summary.header__menu-item .icon-caret {
 
 .product-card-wrapper:hover .card__inner {
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Clickable overlay on image that leads to product page */
+.product-card-wrapper .custom-card-media-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 2 !important;
+  display: block !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
 }
 
 .product-card-wrapper .card__media {
@@ -439,6 +460,7 @@ details[open]>summary.header__menu-item .icon-caret {
   font-weight: 700 !important;
   line-height: 1.2 !important;
   letter-spacing: -0.01em !important;
+  pointer-events: none !important;
 }
 
 .custom-card-badge--sale {
@@ -460,93 +482,7 @@ details[open]>summary.header__menu-item .icon-caret {
   display: inline-flex !important;
 }
 
-/* 3. Top-Right Floating Action Buttons (Wishlist, Compare, Quickview) */
-.custom-card-actions {
-  position: absolute !important;
-  top: 14px !important;
-  right: 14px !important;
-  z-index: 20 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 8px !important;
-}
-
-.custom-card-action-btn {
-  width: 38px !important;
-  height: 38px !important;
-  border-radius: 50% !important;
-  background: #ffffff !important;
-  color: #121212 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border: none !important;
-  cursor: pointer !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  opacity: 0 !important;
-  transform: translate(-14px, -12px) !important;
-  pointer-events: none !important;
-  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease !important;
-  text-decoration: none !important;
-  position: relative !important;
-  z-index: 21 !important;
-}
-
-/* Staggered drop-down and fade-in on card hover */
-.product-card-wrapper:hover .custom-card-action-btn--wishlist,
-.card:hover .custom-card-action-btn--wishlist,
-.card__inner:hover .custom-card-action-btn--wishlist {
-  opacity: 1 !important;
-  transform: translate(0, 0) !important;
-  pointer-events: auto !important;
-  transition-delay: 0.04s !important;
-}
-
-.product-card-wrapper:hover .custom-card-action-btn--compare,
-.card:hover .custom-card-action-btn--compare,
-.card__inner:hover .custom-card-action-btn--compare {
-  opacity: 1 !important;
-  transform: translate(0, 0) !important;
-  pointer-events: auto !important;
-  transition-delay: 0.12s !important;
-}
-
-.product-card-wrapper:hover .custom-card-action-btn--quickview,
-.card:hover .custom-card-action-btn--quickview,
-.card__inner:hover .custom-card-action-btn--quickview {
-  opacity: 1 !important;
-  transform: translate(0, 0) !important;
-  pointer-events: auto !important;
-  transition-delay: 0.20s !important;
-}
-
-.custom-card-action-btn svg {
-  width: 18px !important;
-  height: 18px !important;
-  stroke: currentColor !important;
-  transition: transform 0.2s ease, fill 0.2s ease !important;
-}
-
-.custom-card-action-btn:hover {
-  background: #121212 !important;
-  color: #ffffff !important;
-  transform: scale(1.1) !important;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16) !important;
-}
-
-.custom-card-action-btn--wishlist.is-active svg {
-  fill: #ea3838 !important;
-  stroke: #ea3838 !important;
-}
-
-.custom-card-action-btn--compare.is-active {
-  background: #cf7238 !important;
-  color: #ffffff !important;
-}
-
-/* 4. Bottom Floating "Add To Cart" Pill Button inside Media Card */
+/* 3. Bottom Floating "Add To Cart" Pill Button inside Media Card (Hover Fade-Up) */
 .custom-card-quickadd {
   position: absolute !important;
   bottom: 14px !important;
@@ -555,6 +491,7 @@ details[open]>summary.header__menu-item .icon-caret {
   width: calc(100% - 28px) !important;
   z-index: 20 !important;
   box-sizing: border-box !important;
+  pointer-events: auto !important;
 }
 
 .custom-card-quickadd modal-opener,
@@ -564,6 +501,7 @@ details[open]>summary.header__menu-item .icon-caret {
   width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
+  pointer-events: auto !important;
 }
 
 .custom-card-add-btn {
@@ -623,7 +561,6 @@ details[open]>summary.header__menu-item .icon-caret {
 
 /* Touch & Mobile support */
 @media (hover: none), screen and (max-width: 749px) {
-  .custom-card-action-btn,
   .custom-card-add-btn {
     opacity: 1 !important;
     transform: none !important;
@@ -632,6 +569,7 @@ details[open]>summary.header__menu-item .icon-caret {
 }
 
 /* Hide old outside quick-add */
+.product-card-wrapper .quick-add,
 .product-card-wrapper .card__content > .quick-add {
   display: none !important;
 }
