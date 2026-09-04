@@ -1,0 +1,165 @@
+/* ==========================================================================
+   Custom Vapstore Marquee Infinite Announcement Bar
+   ========================================================================== */
+
+.vap-announcement-bar-wrapper {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  z-index: 15;
+  box-sizing: border-box;
+}
+
+.vap-marquee {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.vap-marquee__viewport {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  position: relative;
+}
+
+.vap-marquee__track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  flex-shrink: 0;
+  will-change: transform;
+  animation: vapMarqueeLeft var(--vap-marquee-duration, 25s) linear infinite;
+}
+
+.vap-marquee__track--right {
+  animation: vapMarqueeRight var(--vap-marquee-duration, 25s) linear infinite;
+}
+
+.vap-marquee--pause-hover:hover .vap-marquee__track {
+  animation-play-state: paused;
+}
+
+@keyframes vapMarqueeLeft {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes vapMarqueeRight {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   ANNOUNCEMENT CONTENT ITEMS
+   -------------------------------------------------------------------------- */
+
+.vap-marquee__group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.vap-marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 var(--vap-marquee-gap, 30px);
+  font-family: 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: var(--vap-marquee-font-size, 13px);
+  font-weight: var(--vap-marquee-font-weight, 600);
+  letter-spacing: var(--vap-marquee-letter-spacing, 0.08em);
+  text-transform: var(--vap-marquee-transform, uppercase);
+  color: var(--vap-marquee-text-color, #ffffff);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity 0.2s ease, color 0.2s ease;
+  line-height: 1.2;
+}
+
+a.vap-marquee__item:hover {
+  opacity: 0.85;
+}
+
+/* Icon / SVG */
+.vap-marquee__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--vap-marquee-accent, #cf7238);
+}
+
+.vap-marquee__icon svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+/* Highlight Text */
+.vap-marquee__highlight {
+  color: var(--vap-marquee-accent, #cf7238);
+  font-weight: 800;
+}
+
+/* Badge Pill */
+.vap-marquee__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+/* Separator Icon */
+.vap-marquee__separator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--vap-marquee-separator-color, #cf7238);
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+.vap-marquee__separator svg {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+/* Custom HTML block wrapper */
+.vap-marquee__html {
+  display: inline-flex;
+  align-items: center;
+}
+
+@media screen and (max-width: 749px) {
+  .vap-marquee__item {
+    font-size: var(--vap-marquee-font-size-mobile, 12px);
+    padding: 0 calc(var(--vap-marquee-gap, 30px) * 0.7);
+  }
+
+  .vap-marquee__icon svg {
+    width: 14px;
+    height: 14px;
+  }
+}
