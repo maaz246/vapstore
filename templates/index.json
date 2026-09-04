@@ -12,27 +12,11 @@
     "vape_hero_slider": {
       "type": "vape-hero-slider",
       "blocks": {
-        "slide_1": {
-          "type": "slide",
-          "settings": {
-            "heading": "Wireless Charging Dock",
-            "heading_size": 48,
-            "subheading": "Get superior support and better posture with ergonomic chairs for long work hours",
-            "subheading_size": 16,
-            "button_label": "Explore Collection",
-            "button_link": "shopify://collections/all",
-            "show_arrow_icon": true,
-            "content_alignment": "center",
-            "text_color": "#ffffff",
-            "button_bg": "#ffffff",
-            "button_text_color": "#121212",
-            "overlay_color": "#000000",
-            "overlay_opacity": 25
-          }
-        },
         "slide_2": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/banner-1.webp",
+            "mobile_image": "shopify://shop_images/banner-1.webp",
             "heading": "Next-Gen Vape Devices",
             "heading_size": 48,
             "subheading": "Experience rich flavor and precision airflow with our luxury engineered collection",
@@ -48,14 +32,36 @@
             "overlay_opacity": 25
           }
         },
-        "slide_3": {
+        "slide_LY8jqH": {
           "type": "slide",
           "settings": {
-            "heading": "Premium Pod Systems",
+            "image": "shopify://shop_images/banner-1.webp",
+            "mobile_image": "shopify://shop_images/banner-1.webp",
+            "heading": "Next-Gen Vape Devices",
             "heading_size": 48,
-            "subheading": "Compact, rechargeable, and crafted for pure satisfaction throughout your day",
+            "subheading": "Experience rich flavor and precision airflow with our luxury engineered collection",
             "subheading_size": 16,
-            "button_label": "View All Products",
+            "button_label": "Shop New Arrivals",
+            "button_link": "shopify://collections/all",
+            "show_arrow_icon": true,
+            "content_alignment": "center",
+            "text_color": "#ffffff",
+            "button_bg": "#ffffff",
+            "button_text_color": "#121212",
+            "overlay_color": "#000000",
+            "overlay_opacity": 25
+          }
+        },
+        "slide_7eV8Nx": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/banner-1.webp",
+            "mobile_image": "shopify://shop_images/banner-1.webp",
+            "heading": "Next-Gen Vape Devices",
+            "heading_size": 48,
+            "subheading": "Experience rich flavor and precision airflow with our luxury engineered collection",
+            "subheading_size": 16,
+            "button_label": "Shop New Arrivals",
             "button_link": "shopify://collections/all",
             "show_arrow_icon": true,
             "content_alignment": "center",
@@ -68,9 +74,9 @@
         }
       },
       "block_order": [
-        "slide_1",
         "slide_2",
-        "slide_3"
+        "slide_LY8jqH",
+        "slide_7eV8Nx"
       ],
       "settings": {
         "height_desktop": 500,
