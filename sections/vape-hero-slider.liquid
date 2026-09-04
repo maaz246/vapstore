@@ -39,6 +39,7 @@
     class="vape-hero-slider"
     data-autoplay="{{ section.settings.autoplay }}"
     data-autoplay-speed="{{ section.settings.autoplay_speed | times: 1000 }}"
+    data-transition-speed="{{ section.settings.transition_speed | default: 1.1 }}"
     data-slide-count="{{ section.blocks.size }}"
   >
     <div class="vape-hero-slider__viewport">
@@ -196,6 +197,7 @@
           this.bullets = Array.from(this.querySelectorAll('[data-bullet-index]'));
           this.isAutoplay = this.dataset.autoplay === 'true';
           this.autoplaySpeed = parseInt(this.dataset.autoplaySpeed, 10) || 5000;
+          this.transitionSpeed = parseFloat(this.dataset.transitionSpeed) || 1.1;
           this.originalSlideCount = this.originalSlides.length;
         }
 
@@ -387,7 +389,7 @@
             offset = centerOffset - targetIndex * (slideWidth + gap);
           }
 
-          this.track.style.transition = animate ? 'transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)' : 'none';
+          this.track.style.transition = animate ? `transform ${this.transitionSpeed}s cubic-bezier(0.2, 1, 0.3, 1)` : 'none';
           this.track.style.transform = `translate3d(${offset}px, 0, 0)`;
 
           if (!animate) {
@@ -496,6 +498,17 @@
     {
       "type": "header",
       "content": "Controls & Behavior"
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "min": 0.6,
+      "max": 2.2,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Slide Transition Duration",
+      "default": 1.1,
+      "info": "Controls how smooth and slow each slide transitions into view."
     },
     {
       "type": "checkbox",

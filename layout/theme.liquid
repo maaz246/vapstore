@@ -61,7 +61,11 @@
     <script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'details-modal.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'standard-actions-override.js' | asset_url }}" defer="defer"></script>
+
+    {{ 'quick-add.css' | asset_url | stylesheet_tag }}
 
     {%- if settings.animations_reveal_on_scroll -%}
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
