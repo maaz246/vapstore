@@ -1,46 +1,102 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
-      "settings": {
-        "color_scheme": "scheme-1",
-        "show_line_separator": true,
-        "show_social": false,
-        "auto_rotate": false,
-        "change_slides_speed": 5,
-        "enable_country_selector": false,
-        "enable_language_selector": false
-      },
+    "custom_vapanncounment_bar_qNjHix": {
+      "type": "custom-vapanncounment-bar",
       "blocks": {
-        "announcement-bar-0": {
+        "announcement_d8rNRk": {
           "type": "announcement",
           "settings": {
-            "text": "Welcome to our store",
-            "text_alignment": "center",
-            "color_scheme": "scheme-1",
-            "link": ""
+            "text": "FREE EXPRESS SHIPPING ON ALL ORDERS OVER $50",
+            "highlight_text": "USE CODE: VAPESHIP",
+            "highlight_color": "#cf7238",
+            "link": "",
+            "icon": "shipping",
+            "custom_svg_code": "",
+            "badge_text": "FREE",
+            "badge_bg": "#cf7238",
+            "badge_color": "#ffffff"
+          }
+        },
+        "announcement_X7TYVU": {
+          "type": "announcement",
+          "settings": {
+            "text": "100% AUTHENTIC GUARANTEED PRODUCTS",
+            "highlight_text": "DIRECT FROM MANUFACTURER",
+            "highlight_color": "#cf7238",
+            "link": "",
+            "icon": "shield",
+            "custom_svg_code": "",
+            "badge_text": "VERIFIED",
+            "badge_bg": "#cf7238",
+            "badge_color": "#ffffff"
+          }
+        },
+        "announcement_bUmiDr": {
+          "type": "announcement",
+          "settings": {
+            "text": "NEW ARRIVALS NOW IN STOCK",
+            "highlight_text": "UP TO 30% OFF",
+            "highlight_color": "#cf7238",
+            "link": "",
+            "icon": "fire",
+            "custom_svg_code": "",
+            "badge_text": "HOT",
+            "badge_bg": "#cf7238",
+            "badge_color": "#ffffff"
           }
         }
       },
       "block_order": [
-        "announcement-bar-0"
-      ]
+        "announcement_d8rNRk",
+        "announcement_X7TYVU",
+        "announcement_bUmiDr"
+      ],
+      "name": "Vap Marquee Bar",
+      "settings": {
+        "bg_color": "#000000",
+        "text_color": "#ffffff",
+        "accent_color": "#cf7238",
+        "speed": 54,
+        "direction": "left",
+        "pause_on_hover": true,
+        "font_size": 13,
+        "font_size_mobile": 12,
+        "font_weight": "600",
+        "letter_spacing": 1,
+        "text_transform": "capitalize",
+        "separator_style": "star",
+        "separator_color": "#cf7238",
+        "gap": 35,
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "show_border_bottom": false,
+        "border_color": "#222222"
+      }
     },
     "header": {
       "type": "header",
       "settings": {
-        "color_scheme": "scheme-1",
-        "menu_color_scheme": "scheme-1",
         "logo_position": "middle-left",
+        "mobile_logo_position": "center",
         "menu": "main-menu",
         "menu_type_desktop": "dropdown",
         "sticky_header_type": "on-scroll-up",
         "show_line_separator": true,
+        "color_scheme": "scheme-1",
+        "menu_color_scheme": "scheme-1",
         "enable_country_selector": true,
         "enable_language_selector": true,
-        "mobile_logo_position": "center",
         "margin_bottom": 0,
         "padding_top": 20,
         "padding_bottom": 20
@@ -48,7 +104,7 @@
     }
   },
   "order": [
-    "announcement-bar",
+    "custom_vapanncounment_bar_qNjHix",
     "header"
   ]
 }
