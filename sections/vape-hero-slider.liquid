@@ -179,36 +179,41 @@
       class VapeHeroSlider extends HTMLElement {
         constructor() {
           super();
-          this.currentIndex = 0;
+          this.realIndex = 0;
+          this.trackIndex = 0;
+          this.cloneCount = 0;
+          this.isTransitioning = false;
           this.autoplayTimer = null;
           this.touchStartX = 0;
           this.touchCurrentX = 0;
           this.isDragging = false;
 
+          this.viewport = this.querySelector('.vape-hero-slider__viewport');
           this.track = this.querySelector('[data-track]');
-          this.slides = Array.from(this.querySelectorAll('.vape-hero-slide'));
+          this.originalSlides = Array.from(this.querySelectorAll('.vape-hero-slide'));
           this.prevBtn = this.querySelector('[data-prev-button]');
           this.nextBtn = this.querySelector('[data-next-button]');
           this.bullets = Array.from(this.querySelectorAll('[data-bullet-index]'));
           this.isAutoplay = this.dataset.autoplay === 'true';
           this.autoplaySpeed = parseInt(this.dataset.autoplaySpeed, 10) || 5000;
-          this.slideCount = this.slides.length;
+          this.originalSlideCount = this.originalSlides.length;
         }
 
         connectedCallback() {
-          if (this.slideCount <= 1) return;
+          if (this.originalSlideCount <= 1) return;
 
+          this.setupInfiniteClones();
           this.initListeners();
-          this.updateSlider(0, false);
+          this.moveToTrackIndex(this.trackIndex, false);
           this.startAutoplay();
 
           // Handle window resize with debouncing
-          this.resizeHandler = this.debounce(() => this.updateSlider(this.currentIndex, false), 100);
+          this.resizeHandler = this.debounce(() => this.moveToTrackIndex(this.trackIndex, false), 100);
           window.addEventListener('resize', this.resizeHandler);
 
           // Theme customizer block select
           document.addEventListener('shopify:block:select', (event) => {
-            const blockIndex = this.slides.findIndex((s) => s.contains(event.target) || s === event.target);
+            const blockIndex = this.originalSlides.findIndex((s) => s.contains(event.target) || s === event.target);
             if (blockIndex !== -1) {
               this.goToSlide(blockIndex);
               this.pauseAutoplay();
@@ -225,6 +230,39 @@
           if (this.resizeHandler) {
             window.removeEventListener('resize', this.resizeHandler);
           }
+        }
+
+        setupInfiniteClones() {
+          // Clone 2 slides on each side so peeking slides are never empty
+          this.cloneCount = Math.min(this.originalSlideCount, 2);
+
+          // Prepend clones of the end slides
+          const startClones = [];
+          for (let i = this.originalSlideCount - this.cloneCount; i < this.originalSlideCount; i++) {
+            const clone = this.originalSlides[i].cloneNode(true);
+            clone.classList.add('is-clone');
+            clone.classList.remove('is-active');
+            clone.setAttribute('aria-hidden', 'true');
+            clone.dataset.cloneIndex = i;
+            startClones.push(clone);
+          }
+          startClones.reverse().forEach((clone) => {
+            this.track.insertBefore(clone, this.track.firstChild);
+          });
+
+          // Append clones of the start slides
+          for (let i = 0; i < this.cloneCount; i++) {
+            const clone = this.originalSlides[i].cloneNode(true);
+            clone.classList.add('is-clone');
+            clone.classList.remove('is-active');
+            clone.setAttribute('aria-hidden', 'true');
+            clone.dataset.cloneIndex = i;
+            this.track.appendChild(clone);
+          }
+
+          // Initial track position starts at real slide 0
+          this.realIndex = 0;
+          this.trackIndex = this.cloneCount;
         }
 
         initListeners() {
@@ -248,6 +286,23 @@
               this.goToSlide(idx);
               this.restartAutoplay();
             });
+          });
+
+          // Infinite loop reset jump on transitionend
+          this.track.addEventListener('transitionend', (e) => {
+            if (e.target !== this.track) return;
+            this.isTransitioning = false;
+
+            // Slid past the last original slide into the end clones
+            if (this.trackIndex >= this.cloneCount + this.originalSlideCount) {
+              this.trackIndex = this.trackIndex - this.originalSlideCount;
+              this.moveToTrackIndex(this.trackIndex, false);
+            }
+            // Slid before the first original slide into the start clones
+            else if (this.trackIndex < this.cloneCount) {
+              this.trackIndex = this.trackIndex + this.originalSlideCount;
+              this.moveToTrackIndex(this.trackIndex, false);
+            }
           });
 
           // Touch events for mobile swipe
@@ -288,43 +343,61 @@
         }
 
         goToSlide(index) {
-          this.currentIndex = (index + this.slideCount) % this.slideCount;
-          this.updateSlider(this.currentIndex, true);
+          if (this.isTransitioning) return;
+          this.realIndex = (index + this.originalSlideCount) % this.originalSlideCount;
+          this.trackIndex = this.realIndex + this.cloneCount;
+          this.isTransitioning = true;
+          this.moveToTrackIndex(this.trackIndex, true);
         }
 
         nextSlide() {
-          this.goToSlide(this.currentIndex + 1);
+          if (this.isTransitioning) return;
+          this.isTransitioning = true;
+          this.trackIndex++;
+          this.realIndex = (this.realIndex + 1) % this.originalSlideCount;
+          this.moveToTrackIndex(this.trackIndex, true);
         }
 
         prevSlide() {
-          this.goToSlide(this.currentIndex - 1);
+          if (this.isTransitioning) return;
+          this.isTransitioning = true;
+          this.trackIndex--;
+          this.realIndex = (this.realIndex - 1 + this.originalSlideCount) % this.originalSlideCount;
+          this.moveToTrackIndex(this.trackIndex, true);
         }
 
-        updateSlider(index, animate = true) {
-          if (!this.track || this.slideCount === 0) return;
+        moveToTrackIndex(targetIndex, animate = true) {
+          if (!this.track) return;
+          const allSlides = Array.from(this.track.children);
+          if (allSlides.length === 0) return;
 
           const isMobile = window.innerWidth < 750;
-          const viewportWidth = this.querySelector('.vape-hero-slider__viewport').offsetWidth;
+          const viewportWidth = this.viewport.offsetWidth;
+          let offset = 0;
 
           if (isMobile) {
             // Mobile: 1 slide at a time (100% width)
-            const offset = -index * viewportWidth;
-            this.track.style.transition = animate ? 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1)' : 'none';
-            this.track.style.transform = `translate3d(${offset}px, 0, 0)`;
+            const slideWidth = allSlides[0].offsetWidth || viewportWidth;
+            offset = -targetIndex * slideWidth;
           } else {
-            // Desktop: Active slide in center with peek on left & right
-            const slideWidth = this.slides[0].offsetWidth;
+            // Desktop: Active slide in center with previous & next cards peeking on both sides
+            const slideWidth = allSlides[0].offsetWidth;
             const gap = parseFloat(getComputedStyle(this.track).gap) || 20;
             const centerOffset = (viewportWidth - slideWidth) / 2;
-            const offset = centerOffset - index * (slideWidth + gap);
-
-            this.track.style.transition = animate ? 'transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)' : 'none';
-            this.track.style.transform = `translate3d(${offset}px, 0, 0)`;
+            offset = centerOffset - targetIndex * (slideWidth + gap);
           }
 
-          // Update active class for zoom-out & fade-up animations
-          this.slides.forEach((slide, i) => {
-            if (i === index) {
+          this.track.style.transition = animate ? 'transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)' : 'none';
+          this.track.style.transform = `translate3d(${offset}px, 0, 0)`;
+
+          if (!animate) {
+            // Force DOM reflow to immediately register instant jump without animation glitch
+            void this.track.offsetHeight;
+          }
+
+          // Update active class on slides for zoom-out & fade-up animations
+          allSlides.forEach((slide, i) => {
+            if (i === targetIndex) {
               slide.classList.add('is-active');
               slide.setAttribute('aria-hidden', 'false');
             } else {
@@ -333,9 +406,9 @@
             }
           });
 
-          // Update animated bullets
+          // Update animated bullets matching real index
           this.bullets.forEach((bullet, i) => {
-            if (i === index) {
+            if (i === this.realIndex) {
               bullet.classList.add('is-active');
               bullet.setAttribute('aria-selected', 'true');
             } else {
@@ -346,7 +419,7 @@
         }
 
         startAutoplay() {
-          if (!this.isAutoplay || this.slideCount <= 1) return;
+          if (!this.isAutoplay || this.originalSlideCount <= 1) return;
           this.pauseAutoplay();
           this.autoplayTimer = setInterval(() => {
             this.nextSlide();

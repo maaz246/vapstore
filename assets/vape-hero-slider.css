@@ -30,6 +30,12 @@
   transform: translate3d(0, 0, 0);
 }
 
+@media screen and (max-width: 749px) {
+  .vape-hero-slider__track {
+    gap: 0;
+  }
+}
+
 /* --------------------------------------------------------------------------
    SLIDE CARD LAYOUT & RESPONSIVENESS
    -------------------------------------------------------------------------- */
