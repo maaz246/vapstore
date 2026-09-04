@@ -41,13 +41,13 @@
    -------------------------------------------------------------------------- */
 
 .vape-hero-slide {
-  flex: 0 0 calc(72vw - 20px);
-  max-width: 1100px;
-  min-width: 620px;
+  flex: 0 0 calc(80vw - 20px);
+  max-width: 1320px;
+  min-width: 680px;
   box-sizing: border-box;
-  opacity: 0.65;
-  transform: scale(0.97);
-  transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 1;
+  transform: scale(0.98);
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .vape-hero-slide.is-active {

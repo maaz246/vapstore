@@ -46,20 +46,38 @@ select,
    HEADER LAYOUT: Centered Navigation Bar
    ========================================================================== */
 
-.section-header {
+.section-header,
+.header-wrapper,
+.header-wrapper--border-bottom {
   background: #ffffff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  border: none !important;
+  border-bottom: none !important;
   position: relative;
   z-index: 10;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.header {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-left: 4rem !important;
+  padding-right: 4rem !important;
+  border: none !important;
+  border-bottom: none !important;
+  box-sizing: border-box !important;
+}
+
+@media screen and (max-width: 989px) {
+  .header {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
 }
 
 .shopify-section-header-sticky,
 .scrolled-past-header {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-}
-
-.header-wrapper {
-  background: #ffffff;
 }
 
 /* 3-Column Grid for Desktop to guarantee perfectly centered nav links */
@@ -70,8 +88,11 @@ select,
     align-items: center !important;
     padding-top: 1.8rem !important;
     padding-bottom: 1.8rem !important;
-    max-width: var(--page-width, 1320px) !important;
-    margin: 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 4.5rem !important;
+    padding-right: 4.5rem !important;
+    margin: 0 !important;
   }
 
   /* 1. Left: Brand Logo */
