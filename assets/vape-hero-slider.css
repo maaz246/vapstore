@@ -1,0 +1,371 @@
+/* ==========================================================================
+   Vape Hero Slider Stylesheet
+   ========================================================================== */
+
+.vape-hero-slider-wrapper {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.vape-hero-slider {
+  display: block;
+  width: 100%;
+  position: relative;
+  user-select: none;
+}
+
+.vape-hero-slider__viewport {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.vape-hero-slider__track {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+/* --------------------------------------------------------------------------
+   SLIDE CARD LAYOUT & RESPONSIVENESS
+   -------------------------------------------------------------------------- */
+
+.vape-hero-slide {
+  flex: 0 0 calc(72vw - 20px);
+  max-width: 1100px;
+  min-width: 620px;
+  box-sizing: border-box;
+  opacity: 0.65;
+  transform: scale(0.97);
+  transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vape-hero-slide.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media screen and (max-width: 749px) {
+  .vape-hero-slide {
+    flex: 0 0 100%;
+    max-width: 100%;
+    min-width: unset;
+    padding: 0 14px;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.vape-hero-slide__card {
+  position: relative;
+  width: 100%;
+  height: var(--vape-slider-height-desktop, 620px);
+  border-radius: var(--vape-slider-radius, 24px);
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.09);
+  background-color: #121212;
+}
+
+@media screen and (max-width: 749px) {
+  .vape-hero-slide__card {
+    height: var(--vape-slider-height-mobile, 480px);
+    border-radius: min(var(--vape-slider-radius, 20px), 20px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   BACKGROUND IMAGE & ZOOM-OUT ANIMATION
+   -------------------------------------------------------------------------- */
+
+.vape-hero-slide__image-wrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.vape-hero-slide__image,
+.vape-hero-slide__image-wrap picture {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.vape-hero-slide__image {
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.16);
+  transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+/* Zoom out to normal scale on active slide */
+.vape-hero-slide.is-active .vape-hero-slide__image {
+  transform: scale(1.0);
+}
+
+.vape-hero-slide__placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #232733;
+}
+
+.vape-hero-slide__placeholder svg {
+  width: 100%;
+  height: 100%;
+  opacity: 0.35;
+}
+
+.vape-hero-slide__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+/* --------------------------------------------------------------------------
+   SLIDE CONTENT & TEXT FADE-UP ANIMATION
+   -------------------------------------------------------------------------- */
+
+.vape-hero-slide__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 4rem;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 749px) {
+  .vape-hero-slide__content {
+    padding: 2.4rem 2rem;
+  }
+}
+
+.vape-hero-slide__content--left {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.vape-hero-slide__content--center {
+  align-items: center;
+  text-align: center;
+}
+
+.vape-hero-slide__content--right {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.vape-hero-slide__inner {
+  max-width: 720px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.vape-hero-slide__content--center .vape-hero-slide__inner {
+  align-items: center;
+}
+
+.vape-hero-slide__content--left .vape-hero-slide__inner {
+  align-items: flex-start;
+}
+
+.vape-hero-slide__content--right .vape-hero-slide__inner {
+  align-items: flex-end;
+}
+
+/* Text Element Fade-Up Keyframes */
+@keyframes vapeFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.vape-hero-slide__heading {
+  font-family: 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin: 0 0 1.4rem 0;
+  opacity: 0;
+  transform: translateY(32px);
+}
+
+.vape-hero-slide.is-active .vape-hero-slide__heading {
+  animation: vapeFadeUp 0.85s 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.vape-hero-slide__subheading {
+  font-family: 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+  margin: 0 0 2.6rem 0;
+  opacity: 0;
+  transform: translateY(32px);
+  max-width: 620px;
+}
+
+.vape-hero-slide.is-active .vape-hero-slide__subheading {
+  animation: vapeFadeUp 0.85s 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.vape-hero-slide__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 9999px;
+  padding: 1.3rem 2.8rem;
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 700;
+  font-size: 1.45rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.16);
+  opacity: 0;
+  transform: translateY(32px);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  line-height: 1;
+}
+
+.vape-hero-slide.is-active .vape-hero-slide__btn {
+  animation: vapeFadeUp 0.85s 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.vape-hero-slide__btn:hover {
+  transform: translateY(-3px) scale(1.03) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.28);
+}
+
+.vape-hero-slide__btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease;
+}
+
+.vape-hero-slide__btn:hover .vape-hero-slide__btn-icon {
+  transform: translate(2px, -2px);
+}
+
+/* --------------------------------------------------------------------------
+   CIRCULAR ARROWS NAVIGATION
+   -------------------------------------------------------------------------- */
+
+.vape-hero-slider__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #121212;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.16);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+}
+
+.vape-hero-slider__arrow:hover {
+  transform: translateY(-50%) scale(1.12);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.24);
+  color: var(--vape-slider-accent, #cf7238);
+}
+
+.vape-hero-slider__arrow:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.vape-hero-slider__arrow--prev {
+  left: 20px;
+}
+
+.vape-hero-slider__arrow--next {
+  right: 20px;
+}
+
+@media screen and (min-width: 990px) {
+  .vape-hero-slider__arrow--prev {
+    left: 32px;
+  }
+  .vape-hero-slider__arrow--next {
+    right: 32px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   ANIMATED BULLET INDICATORS
+   -------------------------------------------------------------------------- */
+
+.vape-hero-slider__pagination {
+  position: absolute;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 6px 12px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+@media screen and (max-width: 749px) {
+  .vape-hero-slider__pagination {
+    bottom: 18px;
+    padding: 5px 10px;
+  }
+}
+
+.vape-hero-slider__bullet {
+  width: 7px;
+  height: 7px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.55);
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: block;
+}
+
+.vape-hero-slider__bullet:hover {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* Expanding pill animation for active bullet */
+.vape-hero-slider__bullet.is-active {
+  width: 28px;
+  height: 7px;
+  border-radius: 4px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}

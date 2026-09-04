@@ -1,0 +1,354 @@
+/* ==========================================================================
+   Custom Vapstore Stylesheet
+   Typography: Urbanist (Google Font)
+   Header: Minimalist Modern with Centered Navigation & Underline Animation
+   ========================================================================== */
+
+:root {
+  --font-body-family: 'Urbanist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading-family: 'Urbanist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --header-accent-color: #cf7238;
+  /* Warm Terracotta / Orange Accent matching design */
+  --header-text-color: #121212;
+  --header-nav-spacing: 3.2rem;
+}
+
+/* Global Font Override for Urbanist */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h0,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.header,
+.header__heading,
+.header__menu-item,
+.button,
+.btn,
+input,
+textarea,
+select,
+.link,
+.card__heading,
+.price,
+.badge {
+  font-family: 'Urbanist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* ==========================================================================
+   HEADER LAYOUT: Centered Navigation Bar
+   ========================================================================== */
+
+.section-header {
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  position: relative;
+  z-index: 10;
+}
+
+.shopify-section-header-sticky,
+.scrolled-past-header {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.header-wrapper {
+  background: #ffffff;
+}
+
+/* 3-Column Grid for Desktop to guarantee perfectly centered nav links */
+@media screen and (min-width: 990px) {
+  .header {
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr !important;
+    align-items: center !important;
+    padding-top: 1.8rem !important;
+    padding-bottom: 1.8rem !important;
+    max-width: var(--page-width, 1320px) !important;
+    margin: 0 auto !important;
+  }
+
+  /* 1. Left: Brand Logo */
+  .header__heading,
+  .header__heading-link {
+    grid-column: 1 !important;
+    justify-self: start !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+  }
+
+  /* 2. Center: Navigation Menu */
+  .header__inline-menu {
+    grid-column: 2 !important;
+    justify-self: center !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+  }
+
+  /* 3. Right: Action Icons */
+  .header__icons {
+    grid-column: 3 !important;
+    justify-self: end !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 0px !important;
+  }
+}
+
+/* Brand Logo Text Styling */
+.header__heading-link .h2,
+.header__heading-link span {
+  font-family: 'Urbanist', sans-serif !important;
+  font-size: 2.6rem !important;
+  font-weight: 800 !important;
+  color: var(--header-text-color) !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+}
+
+/* ==========================================================================
+   RESET DAWN DEFAULT NAV LINK STYLES
+   ========================================================================== */
+
+.header__menu-item,
+.header__menu-item:hover,
+.header__menu-item:focus,
+.header__menu-item:active,
+.header__menu-item span,
+.header__active-menu-item,
+.header__menu-item:hover .header__active-menu-item,
+.list-menu__item--active,
+.list-menu__item--active:hover,
+details[open]>.header__menu-item,
+details[open]:hover>.header__menu-item,
+details[open]>summary.header__menu-item,
+details[open]:hover>summary.header__menu-item {
+  text-decoration: none !important;
+  text-decoration-thickness: 0 !important;
+  text-underline-offset: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+summary.list-menu__item,
+.header__inline-menu summary.header__menu-item {
+  padding-right: 0 !important;
+}
+
+/* ==========================================================================
+   NAVIGATION LINKS & ANIMATED UNDERLINE
+   ========================================================================== */
+
+.header__inline-menu .list-menu--inline {
+  display: flex !important;
+  align-items: center !important;
+  gap: var(--header-nav-spacing) !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.header__inline-menu .header__menu-item {
+  font-family: 'Urbanist', sans-serif !important;
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  color: var(--header-text-color) !important;
+  padding: 0.8rem 0 !important;
+  margin: 0 !important;
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  text-decoration: none !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: color 0.25s ease !important;
+  line-height: 1.3 !important;
+}
+
+/* Caret Icon */
+.header__inline-menu .header__menu-item .icon-caret {
+  width: 0.85rem !important;
+  height: 0.85rem !important;
+  color: inherit !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  margin-top: 1px !important;
+}
+
+details[open]>summary.header__menu-item .icon-caret {
+  transform: rotate(180deg) !important;
+}
+
+/* Animated Underline Pseudo-Element */
+.header__inline-menu .header__menu-item::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: 0px !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 2px !important;
+  background-color: var(--header-accent-color) !important;
+  border-radius: 2px !important;
+  transform: scaleX(0) !important;
+  transform-origin: center !important;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.25s ease !important;
+}
+
+/* Hover State */
+.header__inline-menu .header__menu-item:hover {
+  color: var(--header-accent-color) !important;
+}
+
+.header__inline-menu .header__menu-item:hover::after {
+  transform: scaleX(1) !important;
+}
+
+/* Active State (Current Page / Active Child) */
+.header__inline-menu .header__menu-item[aria-current="page"],
+.header__inline-menu .header__menu-item:has(.header__active-menu-item),
+.header__inline-menu summary.header__menu-item[aria-expanded="true"] {
+  color: var(--header-accent-color) !important;
+}
+
+.header__inline-menu .header__menu-item[aria-current="page"]::after,
+.header__inline-menu .header__menu-item:has(.header__active-menu-item)::after,
+.header__inline-menu summary.header__menu-item[aria-expanded="true"]::after {
+  transform: scaleX(1) !important;
+}
+
+.header__active-menu-item {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+/* ==========================================================================
+   DROPDOWN & MEGA MENU STYLING
+   ========================================================================== */
+
+.header__submenu {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1) !important;
+  padding: 1rem 0.8rem !important;
+  min-width: 22rem !important;
+}
+
+.header__submenu .header__menu-item {
+  font-size: 1.35rem !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  letter-spacing: 0.01em !important;
+  color: #374151 !important;
+  padding: 0.85rem 1.4rem !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+.header__submenu .header__menu-item:hover {
+  color: var(--header-accent-color) !important;
+  background: rgba(207, 114, 56, 0.08) !important;
+}
+
+/* Disable underline inside dropdown submenus */
+.header__submenu .header__menu-item::after {
+  display: none !important;
+}
+
+/* ==========================================================================
+   HEADER RIGHT ICONS (Search, Account, Cart)
+   ========================================================================== */
+
+.header__icons .header__icon,
+.header__icons .modal__toggle {
+  color: var(--header-text-color) !important;
+  width: 4rem !important;
+  height: 4rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  position: relative !important;
+  transition: color 0.2s ease, transform 0.2s ease !important;
+}
+
+.header__icons .header__icon .svg-wrapper,
+.header__icons .header__icon svg {
+  width: 2.2rem !important;
+  height: 2.2rem !important;
+  stroke-width: 1.8px !important;
+  transition: transform 0.2s ease, stroke 0.2s ease !important;
+}
+
+.header__icons .header__icon:hover {
+  color: var(--header-accent-color) !important;
+}
+
+.header__icons .header__icon:hover svg {
+  transform: scale(1.08) !important;
+}
+
+/* Cart Bubble Accent Badge */
+.cart-count-bubble {
+  background-color: var(--header-accent-color) !important;
+  color: #ffffff !important;
+  font-family: 'Urbanist', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 1.05rem !important;
+  min-width: 1.8rem !important;
+  height: 1.8rem !important;
+  border-radius: 9999px !important;
+  border: 2px solid #ffffff !important;
+  top: 0.1rem !important;
+  right: 0.1rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 2px 6px rgba(207, 114, 56, 0.35) !important;
+  line-height: 1 !important;
+  padding: 0 4px !important;
+}
+
+/* ==========================================================================
+   SEARCH MODAL
+   ========================================================================== */
+
+.search-modal {
+  background: #ffffff !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08) !important;
+}
+
+.search-modal .search__input.field__input {
+  border-radius: 9999px !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  padding: 0 24px !important;
+  font-size: 1.5rem !important;
+}
+
+.search-modal .search__input.field__input:focus {
+  border-color: var(--header-accent-color) !important;
+  box-shadow: 0 0 0 1px var(--header-accent-color) !important;
+}

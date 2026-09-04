@@ -1,0 +1,663 @@
+{% comment %}
+  Vape Hero Slider Section
+  Features:
+  - Desktop: Centered active slide with previous/next cards peeking on sides
+  - Mobile: Full width 1 slide at a time with touch swipe
+  - Smooth sliding animation
+  - Background image zoom-out effect on slide change
+  - Staggered text fade-up animation (heading, paragraph, CTA button)
+  - Morphing animated bullet indicators & circular arrow controls
+{% endcomment %}
+
+{{ 'vape-hero-slider.css' | asset_url | stylesheet_tag: preload: true }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  #vape-hero-slider-{{ section.id }} {
+    --vape-slider-height-desktop: {{ section.settings.height_desktop }}px;
+    --vape-slider-height-mobile: {{ section.settings.height_mobile }}px;
+    --vape-slider-radius: {{ section.settings.card_border_radius }}px;
+    --vape-slider-overlay-color: {{ section.settings.overlay_color }};
+    --vape-slider-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --vape-slider-accent: {{ section.settings.accent_color }};
+  }
+{%- endstyle -%}
+
+<div class="vape-hero-slider-wrapper section-{{ section.id }}-padding" id="vape-hero-slider-{{ section.id }}">
+  <vape-hero-slider
+    class="vape-hero-slider"
+    data-autoplay="{{ section.settings.autoplay }}"
+    data-autoplay-speed="{{ section.settings.autoplay_speed | times: 1000 }}"
+    data-slide-count="{{ section.blocks.size }}"
+  >
+    <div class="vape-hero-slider__viewport">
+      <div class="vape-hero-slider__track" data-track>
+        {%- for block in section.blocks -%}
+          <div
+            class="vape-hero-slide{% if forloop.first %} is-active{% endif %}"
+            data-index="{{ forloop.index0 }}"
+            {{ block.shopify_attributes }}
+          >
+            <div class="vape-hero-slide__card">
+              <div class="vape-hero-slide__image-wrap">
+                {%- if block.settings.image != blank -%}
+                  <picture>
+                    {%- if block.settings.mobile_image != blank -%}
+                      <source
+                        media="(max-width: 749px)"
+                        srcset="{{ block.settings.mobile_image | image_url: width: 800 }} 1x, {{ block.settings.mobile_image | image_url: width: 1600 }} 2x"
+                      >
+                    {%- endif -%}
+                    {{
+                      block.settings.image
+                      | image_url: width: 2400
+                      | image_tag:
+                        loading: 'eager',
+                        fetchpriority: 'high',
+                        class: 'vape-hero-slide__image',
+                        widths: '600, 900, 1200, 1600, 2000, 2400',
+                        sizes: '(max-width: 749px) 100vw, 75vw',
+                        alt: block.settings.heading | default: shop.name | escape
+                    }}
+                  </picture>
+                {%- else -%}
+                  <div class="vape-hero-slide__placeholder">
+                    {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                {%- endif -%}
+                <div
+                  class="vape-hero-slide__overlay"
+                  style="background-color: {{ block.settings.overlay_color | default: section.settings.overlay_color }}; opacity: {{ block.settings.overlay_opacity | default: section.settings.overlay_opacity | divided_by: 100.0 }};"
+                ></div>
+              </div>
+
+              <div class="vape-hero-slide__content vape-hero-slide__content--{{ block.settings.content_alignment | default: 'center' }}">
+                <div class="vape-hero-slide__inner">
+                  {%- if block.settings.heading != blank -%}
+                    <h2
+                      class="vape-hero-slide__heading"
+                      style="color: {{ block.settings.text_color | default: '#ffffff' }}; font-size: {{ block.settings.heading_size }}px;"
+                    >
+                      {{ block.settings.heading | escape }}
+                    </h2>
+                  {%- endif -%}
+
+                  {%- if block.settings.subheading != blank -%}
+                    <p
+                      class="vape-hero-slide__subheading"
+                      style="color: {{ block.settings.text_color | default: '#ffffff' }}; font-size: {{ block.settings.subheading_size }}px;"
+                    >
+                      {{ block.settings.subheading | escape }}
+                    </p>
+                  {%- endif -%}
+
+                  {%- if block.settings.button_label != blank -%}
+                    <a
+                      {% if block.settings.button_link != blank %}
+                        href="{{ block.settings.button_link }}"
+                      {% else %}
+                        role="link" aria-disabled="true"
+                      {% endif %}
+                      class="vape-hero-slide__btn"
+                      style="background-color: {{ block.settings.button_bg | default: '#ffffff' }}; color: {{ block.settings.button_text_color | default: '#121212' }};"
+                    >
+                      <span>{{ block.settings.button_label | escape }}</span>
+                      {%- if block.settings.show_arrow_icon -%}
+                        <span class="vape-hero-slide__btn-icon" aria-hidden="true">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="7" y1="17" x2="17" y2="7"></line>
+                            <polyline points="7 7 17 7 17 17"></polyline>
+                          </svg>
+                        </span>
+                      {%- endif -%}
+                    </a>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- if section.settings.show_arrows and section.blocks.size > 1 -%}
+      <button
+        type="button"
+        class="vape-hero-slider__arrow vape-hero-slider__arrow--prev"
+        aria-label="{{ 'general.slider.previous_slide' | t | default: 'Previous slide' }}"
+        data-prev-button
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <button
+        type="button"
+        class="vape-hero-slider__arrow vape-hero-slider__arrow--next"
+        aria-label="{{ 'general.slider.next_slide' | t | default: 'Next slide' }}"
+        data-next-button
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    {%- endif -%}
+
+    {%- if section.settings.show_bullets and section.blocks.size > 1 -%}
+      <div class="vape-hero-slider__pagination" data-pagination role="tablist" aria-label="Slider Pagination">
+        {%- for block in section.blocks -%}
+          <button
+            type="button"
+            class="vape-hero-slider__bullet{% if forloop.first %} is-active{% endif %}"
+            data-bullet-index="{{ forloop.index0 }}"
+            role="tab"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            aria-label="Slide {{ forloop.index }} of {{ section.blocks.size }}"
+          ></button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </vape-hero-slider>
+</div>
+
+<script>
+  if (!customElements.get('vape-hero-slider')) {
+    customElements.define(
+      'vape-hero-slider',
+      class VapeHeroSlider extends HTMLElement {
+        constructor() {
+          super();
+          this.currentIndex = 0;
+          this.autoplayTimer = null;
+          this.touchStartX = 0;
+          this.touchCurrentX = 0;
+          this.isDragging = false;
+
+          this.track = this.querySelector('[data-track]');
+          this.slides = Array.from(this.querySelectorAll('.vape-hero-slide'));
+          this.prevBtn = this.querySelector('[data-prev-button]');
+          this.nextBtn = this.querySelector('[data-next-button]');
+          this.bullets = Array.from(this.querySelectorAll('[data-bullet-index]'));
+          this.isAutoplay = this.dataset.autoplay === 'true';
+          this.autoplaySpeed = parseInt(this.dataset.autoplaySpeed, 10) || 5000;
+          this.slideCount = this.slides.length;
+        }
+
+        connectedCallback() {
+          if (this.slideCount <= 1) return;
+
+          this.initListeners();
+          this.updateSlider(0, false);
+          this.startAutoplay();
+
+          // Handle window resize with debouncing
+          this.resizeHandler = this.debounce(() => this.updateSlider(this.currentIndex, false), 100);
+          window.addEventListener('resize', this.resizeHandler);
+
+          // Theme customizer block select
+          document.addEventListener('shopify:block:select', (event) => {
+            const blockIndex = this.slides.findIndex((s) => s.contains(event.target) || s === event.target);
+            if (blockIndex !== -1) {
+              this.goToSlide(blockIndex);
+              this.pauseAutoplay();
+            }
+          });
+
+          document.addEventListener('shopify:block:deselect', () => {
+            this.startAutoplay();
+          });
+        }
+
+        disconnectedCallback() {
+          this.pauseAutoplay();
+          if (this.resizeHandler) {
+            window.removeEventListener('resize', this.resizeHandler);
+          }
+        }
+
+        initListeners() {
+          if (this.prevBtn) {
+            this.prevBtn.addEventListener('click', () => {
+              this.prevSlide();
+              this.restartAutoplay();
+            });
+          }
+
+          if (this.nextBtn) {
+            this.nextBtn.addEventListener('click', () => {
+              this.nextSlide();
+              this.restartAutoplay();
+            });
+          }
+
+          this.bullets.forEach((bullet) => {
+            bullet.addEventListener('click', () => {
+              const idx = parseInt(bullet.dataset.bulletIndex, 10);
+              this.goToSlide(idx);
+              this.restartAutoplay();
+            });
+          });
+
+          // Touch events for mobile swipe
+          this.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: true });
+          this.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: true });
+          this.addEventListener('touchend', () => this.handleTouchEnd());
+
+          // Mouse hover pause
+          this.addEventListener('mouseenter', () => this.pauseAutoplay());
+          this.addEventListener('mouseleave', () => this.startAutoplay());
+        }
+
+        handleTouchStart(e) {
+          this.touchStartX = e.touches[0].clientX;
+          this.touchCurrentX = this.touchStartX;
+          this.isDragging = true;
+          this.pauseAutoplay();
+        }
+
+        handleTouchMove(e) {
+          if (!this.isDragging) return;
+          this.touchCurrentX = e.touches[0].clientX;
+        }
+
+        handleTouchEnd() {
+          if (!this.isDragging) return;
+          this.isDragging = false;
+          const diff = this.touchStartX - this.touchCurrentX;
+          const threshold = 40;
+
+          if (diff > threshold) {
+            this.nextSlide();
+          } else if (diff < -threshold) {
+            this.prevSlide();
+          }
+
+          this.startAutoplay();
+        }
+
+        goToSlide(index) {
+          this.currentIndex = (index + this.slideCount) % this.slideCount;
+          this.updateSlider(this.currentIndex, true);
+        }
+
+        nextSlide() {
+          this.goToSlide(this.currentIndex + 1);
+        }
+
+        prevSlide() {
+          this.goToSlide(this.currentIndex - 1);
+        }
+
+        updateSlider(index, animate = true) {
+          if (!this.track || this.slideCount === 0) return;
+
+          const isMobile = window.innerWidth < 750;
+          const viewportWidth = this.querySelector('.vape-hero-slider__viewport').offsetWidth;
+
+          if (isMobile) {
+            // Mobile: 1 slide at a time (100% width)
+            const offset = -index * viewportWidth;
+            this.track.style.transition = animate ? 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1)' : 'none';
+            this.track.style.transform = `translate3d(${offset}px, 0, 0)`;
+          } else {
+            // Desktop: Active slide in center with peek on left & right
+            const slideWidth = this.slides[0].offsetWidth;
+            const gap = parseFloat(getComputedStyle(this.track).gap) || 20;
+            const centerOffset = (viewportWidth - slideWidth) / 2;
+            const offset = centerOffset - index * (slideWidth + gap);
+
+            this.track.style.transition = animate ? 'transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)' : 'none';
+            this.track.style.transform = `translate3d(${offset}px, 0, 0)`;
+          }
+
+          // Update active class for zoom-out & fade-up animations
+          this.slides.forEach((slide, i) => {
+            if (i === index) {
+              slide.classList.add('is-active');
+              slide.setAttribute('aria-hidden', 'false');
+            } else {
+              slide.classList.remove('is-active');
+              slide.setAttribute('aria-hidden', 'true');
+            }
+          });
+
+          // Update animated bullets
+          this.bullets.forEach((bullet, i) => {
+            if (i === index) {
+              bullet.classList.add('is-active');
+              bullet.setAttribute('aria-selected', 'true');
+            } else {
+              bullet.classList.remove('is-active');
+              bullet.setAttribute('aria-selected', 'false');
+            }
+          });
+        }
+
+        startAutoplay() {
+          if (!this.isAutoplay || this.slideCount <= 1) return;
+          this.pauseAutoplay();
+          this.autoplayTimer = setInterval(() => {
+            this.nextSlide();
+          }, this.autoplaySpeed);
+        }
+
+        pauseAutoplay() {
+          if (this.autoplayTimer) {
+            clearInterval(this.autoplayTimer);
+            this.autoplayTimer = null;
+          }
+        }
+
+        restartAutoplay() {
+          this.pauseAutoplay();
+          this.startAutoplay();
+        }
+
+        debounce(fn, wait) {
+          let timeout;
+          return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => fn.apply(this, args), wait);
+          };
+        }
+      }
+    );
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Vape Hero Slider",
+  "tag": "section",
+  "class": "section-vape-hero-slider",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Slider Dimensions"
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "min": 450,
+      "max": 850,
+      "step": 10,
+      "unit": "px",
+      "label": "Desktop Height",
+      "default": 620
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "min": 350,
+      "max": 650,
+      "step": 10,
+      "unit": "px",
+      "label": "Mobile Height",
+      "default": 480
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Corner Radius",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Controls & Behavior"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Autoplay Speed",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show Navigation Arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bullets",
+      "label": "Show Animated Bullets",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Default Colors"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Default Image Overlay Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Default Overlay Opacity",
+      "default": 25
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#cf7238"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 24
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Desktop Background Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Background Image (Optional)"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Wireless Charging Dock"
+        },
+        {
+          "type": "range",
+          "id": "heading_size",
+          "min": 24,
+          "max": 72,
+          "step": 2,
+          "unit": "px",
+          "label": "Heading Font Size",
+          "default": 48
+        },
+        {
+          "type": "textarea",
+          "id": "subheading",
+          "label": "Subheading / Description",
+          "default": "Get superior support and better posture with ergonomic chairs for long work hours"
+        },
+        {
+          "type": "range",
+          "id": "subheading_size",
+          "min": 13,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Subheading Font Size",
+          "default": 16
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "Explore Collection"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_arrow_icon",
+          "label": "Show Arrow Icon on Button",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "content_alignment",
+          "label": "Content Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "header",
+          "content": "Custom Slide Colors"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "button_bg",
+          "label": "Button Background",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button Text Color",
+          "default": "#121212"
+        },
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "Overlay Color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 0,
+          "max": 80,
+          "step": 5,
+          "unit": "%",
+          "label": "Overlay Opacity",
+          "default": 25
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vape Hero Slider",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Wireless Charging Dock",
+            "subheading": "Get superior support and better posture with ergonomic chairs for long work hours",
+            "button_label": "Explore Collection"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Next-Gen Vape Devices",
+            "subheading": "Experience rich flavor and precision airflow with our luxury engineered collection",
+            "button_label": "Shop New Arrivals"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Premium Pod Systems",
+            "subheading": "Compact, rechargeable, and crafted for pure satisfaction throughout your day",
+            "button_label": "View All Products"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
