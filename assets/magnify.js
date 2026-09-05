@@ -1,63 +1,55 @@
-// create a container and set the full-size image as its background
-function createOverlay(image) {
-  const overlayImage = document.createElement('img');
-  overlayImage.setAttribute('src', `${image.src}`);
-  overlay = document.createElement('div');
-  prepareOverlay(overlay, overlayImage);
+// Smooth interactive automatic hover zoom for main product media
+function initSmoothHoverZoom(zoomRatio = 2.2) {
+  const openers = document.querySelectorAll('.product__modal-opener--image');
+  openers.forEach((opener) => {
+    if (opener.dataset.hoverZoomActive === 'true') return;
+    opener.dataset.hoverZoomActive = 'true';
 
-  image.style.opacity = '50%';
-  toggleLoadingSpinner(image);
+    const img = opener.querySelector('img');
+    if (!img) return;
 
-  overlayImage.onload = () => {
-    toggleLoadingSpinner(image);
-    image.parentElement.insertBefore(overlay, image);
-    image.style.opacity = '100%';
-  };
+    opener.style.overflow = 'hidden';
+    opener.style.position = 'relative';
+    img.style.transformOrigin = 'center center';
+    img.style.transform = 'scale(1)';
 
-  return overlay;
-}
+    opener.addEventListener('mouseenter', (e) => {
+      if (window.matchMedia('(max-width: 749px)').matches) return;
+      img.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
+      const rect = opener.getBoundingClientRect();
+      const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+      const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+      img.style.transformOrigin = `${x}% ${y}%`;
+      img.style.transform = `scale(${zoomRatio})`;
+    });
 
-function prepareOverlay(container, image) {
-  container.setAttribute('class', 'image-magnify-full-size');
-  container.setAttribute('aria-hidden', 'true');
-  container.style.backgroundImage = `url('${image.src}')`;
-  container.style.backgroundColor = 'var(--gradient-background)';
-}
+    opener.addEventListener('mousemove', (e) => {
+      if (window.matchMedia('(max-width: 749px)').matches) return;
+      const rect = opener.getBoundingClientRect();
+      const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+      const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+      img.style.transformOrigin = `${x}% ${y}%`;
+      img.style.transform = `scale(${zoomRatio})`;
+    });
 
-function toggleLoadingSpinner(image) {
-  const loadingSpinner = image.parentElement.parentElement.querySelector(`.loading__spinner`);
-  loadingSpinner.classList.toggle('hidden');
-}
-
-function moveWithHover(image, event, zoomRatio) {
-  // calculate mouse position
-  const ratio = image.height / image.width;
-  const container = event.target.getBoundingClientRect();
-  const xPosition = event.clientX - container.left;
-  const yPosition = event.clientY - container.top;
-  const xPercent = `${xPosition / (image.clientWidth / 100)}%`;
-  const yPercent = `${yPosition / ((image.clientWidth * ratio) / 100)}%`;
-
-  // determine what to show in the frame
-  overlay.style.backgroundPosition = `${xPercent} ${yPercent}`;
-  overlay.style.backgroundSize = `${image.width * zoomRatio}px`;
-}
-
-function magnify(image, zoomRatio) {
-  const overlay = createOverlay(image);
-  overlay.onclick = () => overlay.remove();
-  overlay.onmousemove = (event) => moveWithHover(image, event, zoomRatio);
-  overlay.onmouseleave = () => overlay.remove();
-}
-
-function enableZoomOnHover(zoomRatio) {
-  const images = document.querySelectorAll('.image-magnify-hover');
-  images.forEach((image) => {
-    image.onclick = (event) => {
-      magnify(image, zoomRatio);
-      moveWithHover(image, event, zoomRatio);
-    };
+    opener.addEventListener('mouseleave', () => {
+      img.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+      img.style.transform = 'scale(1)';
+      setTimeout(() => {
+        img.style.transformOrigin = 'center center';
+      }, 400);
+    });
   });
 }
 
-enableZoomOnHover(2);
+document.addEventListener('DOMContentLoaded', () => {
+  initSmoothHoverZoom(2.2);
+});
+
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  initSmoothHoverZoom(2.2);
+}
+
+document.addEventListener('shopify:section:load', () => {
+  initSmoothHoverZoom(2.2);
+});

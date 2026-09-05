@@ -39,7 +39,7 @@
     class="vape-hero-slider"
     data-autoplay="{{ section.settings.autoplay }}"
     data-autoplay-speed="{{ section.settings.autoplay_speed | times: 1000 }}"
-    data-transition-speed="{{ section.settings.transition_speed | default: 1.1 }}"
+    data-transition-speed="{{ section.settings.transition_speed | default: 1.8 }}"
     data-slide-count="{{ section.blocks.size }}"
   >
     <div class="vape-hero-slider__viewport">
@@ -196,8 +196,8 @@
           this.nextBtn = this.querySelector('[data-next-button]');
           this.bullets = Array.from(this.querySelectorAll('[data-bullet-index]'));
           this.isAutoplay = this.dataset.autoplay === 'true';
-          this.autoplaySpeed = parseInt(this.dataset.autoplaySpeed, 10) || 5000;
-          this.transitionSpeed = parseFloat(this.dataset.transitionSpeed) || 1.1;
+          this.autoplaySpeed = parseInt(this.dataset.autoplaySpeed, 10) || 7000;
+          this.transitionSpeed = parseFloat(this.dataset.transitionSpeed) || 1.8;
           this.originalSlideCount = this.originalSlides.length;
         }
 
@@ -502,12 +502,12 @@
     {
       "type": "range",
       "id": "transition_speed",
-      "min": 0.6,
-      "max": 2.2,
+      "min": 0.8,
+      "max": 3.0,
       "step": 0.1,
       "unit": "s",
       "label": "Slide Transition Duration",
-      "default": 1.1,
+      "default": 1.8,
       "info": "Controls how smooth and slow each slide transitions into view."
     },
     {
@@ -520,11 +520,11 @@
       "type": "range",
       "id": "autoplay_speed",
       "min": 3,
-      "max": 10,
+      "max": 15,
       "step": 1,
       "unit": "s",
       "label": "Autoplay Speed",
-      "default": 5
+      "default": 7
     },
     {
       "type": "checkbox",
