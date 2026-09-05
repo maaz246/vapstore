@@ -5,6 +5,7 @@ if (!customElements.get('quick-add-modal')) {
       constructor() {
         super();
         this.modalContent = this.querySelector('[id^="QuickAddInfo-"]');
+        this.isClosing = false;
 
         this.addEventListener('product-info:loaded', ({ target }) => {
           target.addPreProcessCallback(this.preprocessHTML.bind(this));
@@ -12,15 +13,25 @@ if (!customElements.get('quick-add-modal')) {
       }
 
       hide(preventFocus = false) {
-        const cartNotification = document.querySelector('cart-notification') || document.querySelector('cart-drawer');
-        if (cartNotification) cartNotification.setActiveElement(this.openedBy);
-        this.modalContent.innerHTML = '';
+        if (this.isClosing) return;
+        this.isClosing = true;
+        this.classList.add('quick-add-modal--closing');
 
-        if (preventFocus) this.openedBy = null;
-        super.hide();
+        setTimeout(() => {
+          this.classList.remove('quick-add-modal--closing');
+          this.isClosing = false;
+          const cartNotification = document.querySelector('cart-notification') || document.querySelector('cart-drawer');
+          if (cartNotification) cartNotification.setActiveElement(this.openedBy);
+          this.modalContent.innerHTML = '';
+
+          if (preventFocus) this.openedBy = null;
+          super.hide();
+        }, 400);
       }
 
       show(opener) {
+        this.isClosing = false;
+        this.classList.remove('quick-add-modal--closing');
         opener.setAttribute('aria-disabled', true);
         opener.classList.add('loading');
         opener.querySelector('.loading__spinner').classList.remove('hidden');
