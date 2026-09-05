@@ -497,6 +497,8 @@
                     section_id: section.id,
                     show_pickup_availability: true
                   -%}
+                {%- when 'custom_accordions' -%}
+                  {% render 'product-custom-accordions', block: block, product: product %}
                 {%- when 'rating' -%}
                   {%- if product.metafields.reviews.rating.value != blank -%}
                     <div class="rating-wrapper">
@@ -938,6 +940,31 @@
           "default": true,
           "label": "t:sections.main-product.blocks.buy_buttons.settings.show_gift_card_recipient.label",
           "info": "t:sections.main-product.blocks.buy_buttons.settings.show_gift_card_recipient.info"
+        }
+      ]
+    },
+    {
+      "type": "custom_accordions",
+      "name": "Product Accordions",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading_1",
+          "label": "Heading 1",
+          "default": "Dimensions & Specifications"
+        },
+        {
+          "type": "text",
+          "id": "heading_2",
+          "label": "Heading 2",
+          "default": "Warranty & Replacement"
+        },
+        {
+          "type": "text",
+          "id": "heading_3",
+          "label": "Heading 3",
+          "default": "Shipping Details"
         }
       ]
     },

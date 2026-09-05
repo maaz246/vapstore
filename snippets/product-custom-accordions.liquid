@@ -1,0 +1,165 @@
+{% comment %}
+  Renders Custom Product Metafield Accordions:
+  - Dimensions & Specifications (product.metafields.custom.dimensions_specifications)
+  - Warranty & Replacement (product.metafields.custom.warranty_replacement)
+  - Shipping Details (product.metafields.custom.shipping_details)
+  Fallback: 3-4 lines of default sample text if metafield is blank.
+  Features: Silky-smooth opening & closing height transitions.
+{% endcomment %}
+
+{%- liquid
+  assign heading_1 = block.settings.heading_1 | default: 'Dimensions & Specifications'
+  assign heading_2 = block.settings.heading_2 | default: 'Warranty & Replacement'
+  assign heading_3 = block.settings.heading_3 | default: 'Shipping Details'
+
+  assign meta_dim = product.metafields.custom.dimensions_specifications
+  assign meta_warranty = product.metafields.custom.warranty_replacement
+  assign meta_shipping = product.metafields.custom.shipping_details
+
+  assign sample_dim = 'Height: 110mm | Width: 25mm | Depth: 15mm.<br>Built with premium aerospace-grade aluminum alloy and lightweight ergonomic finish.<br>Battery capacity: 1500mAh with fast Type-C charging support.<br>Tank capacity: 2.0ml with leak-resistant magnetic connection.'
+
+  assign sample_warranty = 'Includes a 12-month limited manufacturer warranty covering hardware and craftsmanship defects.<br>Enjoy hassle-free 30-day replacements on all unboxed and non-functioning units.<br>Contact our 24/7 customer support team with your order confirmation for rapid warranty claims.'
+
+  assign sample_shipping = 'Orders are processed within 24 to 48 hours on business days.<br>Standard nationwide delivery arrives in 3 to 5 business days with end-to-end tracking provided.<br>Express 2-day priority shipping available at checkout.<br>Discreet and secure packaging guaranteed.'
+-%}
+
+<div class="custom-product-accordions" {{ block.shopify_attributes }}>
+  <!-- 1. Dimensions & Specifications -->
+  <div class="custom-accordion-item" id="Accordion-Dimensions-{{ section.id }}">
+    <button type="button" class="custom-accordion-summary" aria-expanded="false">
+      <span class="custom-accordion-title">{{ heading_1 }}</span>
+      <span class="custom-accordion-icon">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19" class="icon-vertical"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </span>
+    </button>
+    <div class="custom-accordion-content">
+      <div class="custom-accordion-body">
+        {%- if meta_dim.value != blank -%}
+          {%- if meta_dim.type contains 'rich_text' -%}
+            {{ meta_dim | metafield_tag }}
+          {%- else -%}
+            {{ meta_dim.value | newline_to_br }}
+          {%- endif -%}
+        {%- elsif meta_dim != blank -%}
+          {{ meta_dim | newline_to_br }}
+        {%- else -%}
+          <p>{{ sample_dim }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Warranty & Replacement -->
+  <div class="custom-accordion-item" id="Accordion-Warranty-{{ section.id }}">
+    <button type="button" class="custom-accordion-summary" aria-expanded="false">
+      <span class="custom-accordion-title">{{ heading_2 }}</span>
+      <span class="custom-accordion-icon">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19" class="icon-vertical"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </span>
+    </button>
+    <div class="custom-accordion-content">
+      <div class="custom-accordion-body">
+        {%- if meta_warranty.value != blank -%}
+          {%- if meta_warranty.type contains 'rich_text' -%}
+            {{ meta_warranty | metafield_tag }}
+          {%- else -%}
+            {{ meta_warranty.value | newline_to_br }}
+          {%- endif -%}
+        {%- elsif meta_warranty != blank -%}
+          {{ meta_warranty | newline_to_br }}
+        {%- else -%}
+          <p>{{ sample_warranty }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Shipping Details -->
+  <div class="custom-accordion-item" id="Accordion-Shipping-{{ section.id }}">
+    <button type="button" class="custom-accordion-summary" aria-expanded="false">
+      <span class="custom-accordion-title">{{ heading_3 }}</span>
+      <span class="custom-accordion-icon">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19" class="icon-vertical"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </span>
+    </button>
+    <div class="custom-accordion-content">
+      <div class="custom-accordion-body">
+        {%- if meta_shipping.value != blank -%}
+          {%- if meta_shipping.type contains 'rich_text' -%}
+            {{ meta_shipping | metafield_tag }}
+          {%- else -%}
+            {{ meta_shipping.value | newline_to_br }}
+          {%- endif -%}
+        {%- elsif meta_shipping != blank -%}
+          {{ meta_shipping | newline_to_br }}
+        {%- else -%}
+          <p>{{ sample_shipping }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    function initCustomAccordions() {
+      const items = document.querySelectorAll('.custom-product-accordions .custom-accordion-item');
+      items.forEach((item) => {
+        if (item.dataset.accordionBound) return;
+        item.dataset.accordionBound = 'true';
+
+        const btn = item.querySelector('.custom-accordion-summary');
+        const content = item.querySelector('.custom-accordion-content');
+        if (!btn || !content) return;
+
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const isOpen = item.classList.contains('is-open');
+
+          if (isOpen) {
+            // Smoothly close
+            content.style.maxHeight = content.scrollHeight + 'px';
+            content.offsetHeight; // force reflow
+            content.style.maxHeight = '0px';
+            content.style.opacity = '0';
+            btn.setAttribute('aria-expanded', 'false');
+            item.classList.remove('is-open');
+          } else {
+            // Smoothly open
+            item.classList.add('is-open');
+            btn.setAttribute('aria-expanded', 'true');
+            content.style.maxHeight = '0px';
+            content.style.opacity = '0';
+            content.offsetHeight; // force reflow
+            content.style.maxHeight = content.scrollHeight + 'px';
+            content.style.opacity = '1';
+
+            const onTransitionEnd = function(event) {
+              if (event.propertyName === 'max-height' && item.classList.contains('is-open')) {
+                content.style.maxHeight = 'none';
+                content.removeEventListener('transitionend', onTransitionEnd);
+              }
+            };
+            content.addEventListener('transitionend', onTransitionEnd);
+          }
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCustomAccordions);
+    } else {
+      initCustomAccordions();
+    }
+    document.addEventListener('shopify:section:load', initCustomAccordions);
+  })();
+</script>

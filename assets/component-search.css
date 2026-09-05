@@ -72,3 +72,26 @@ input::-webkit-search-decoration {
 .template-search__results {
   position: relative;
 }
+
+/* ==========================================================================
+   SEARCH MODAL & PILL INPUT
+   ========================================================================== */
+
+.search-modal {
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+.search-modal .search__input.field__input {
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 0 24px;
+  font-size: 1.5rem;
+}
+
+.search-modal .search__input.field__input:focus {
+  border-color: var(--header-accent-color);
+  box-shadow: 0 0 0 1px var(--header-accent-color);
+}
+

@@ -33,6 +33,14 @@
             "show_gift_card_recipient": true
           }
         },
+        "custom_accordions": {
+          "type": "custom_accordions",
+          "settings": {
+            "heading_1": "Dimensions & Specifications",
+            "heading_2": "Warranty & Replacement",
+            "heading_3": "Shipping Details"
+          }
+        },
         "description": {
           "type": "description"
         },
@@ -50,6 +58,7 @@
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
+        "custom_accordions",
         "description",
         "share"
       ],

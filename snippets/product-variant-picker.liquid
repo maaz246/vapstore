@@ -34,14 +34,17 @@
           endif
         endif
       -%}
+      {%- assign option_name_lower = option.name | downcase -%}
       {%- if picker_type == 'swatch' -%}
         <fieldset class="js product-form__input product-form__input--swatch">
-          <legend class="form__label">
-            {{ option.name }}:
-            <span data-selected-value>
-              {{- option.selected_value -}}
-            </span>
-          </legend>
+          {%- unless option_name_lower == 'title' or option_name_lower == 'default title' -%}
+            <legend class="form__label">
+              {{ option.name }}:
+              <span data-selected-value>
+                {{- option.selected_value -}}
+              </span>
+            </legend>
+          {%- endunless -%}
           {% render 'product-variant-options',
             product: product,
             option: option,
@@ -51,7 +54,9 @@
         </fieldset>
       {%- elsif picker_type == 'button' -%}
         <fieldset class="js product-form__input product-form__input--pill">
-          <legend class="form__label">{{ option.name }}</legend>
+          {%- unless option_name_lower == 'title' or option_name_lower == 'default title' -%}
+            <legend class="form__label">{{ option.name }}</legend>
+          {%- endunless -%}
           {% render 'product-variant-options',
             product: product,
             option: option,

@@ -622,3 +622,195 @@ cart-remove-button .icon-remove {
     padding-left: 0;
   }
 }
+
+/* ==========================================================================
+   CART PAGE CUSTOMIZATION (VAPSTORE)
+   ========================================================================== */
+
+/* Cart Page Heading & Continue Shopping Header Link */
+cart-items .title-wrapper-with-link {
+  margin-bottom: 3.2rem;
+  align-items: center;
+}
+
+cart-items .title-wrapper-with-link .title--primary {
+  font-family: var(--font-heading-family);
+  font-size: 3.6rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #121212;
+  margin: 0;
+}
+
+cart-items .title-wrapper-with-link .underlined-link {
+  font-family: var(--font-body-family);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #121212;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  transition: color 0.25s ease;
+}
+
+cart-items .title-wrapper-with-link .underlined-link:hover {
+  color: var(--header-accent-color, #cf7238);
+}
+
+/* Cart Table Headings */
+.cart-items th {
+  font-family: var(--font-body-family);
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8a92a6;
+  padding-bottom: 1.6rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Cart Item Row */
+.cart-item {
+  padding-top: 2.4rem;
+  padding-bottom: 2.4rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Cart Item Image Box */
+.cart-item__image-container {
+  background-color: #f0f2f5;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  padding: 1.2rem;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.cart-item__image {
+  border-radius: 10px;
+  object-fit: contain;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cart-item:hover .cart-item__image {
+  transform: scale(1.06);
+}
+
+/* Cart Item Title & Price Details */
+.cart-item__name {
+  font-family: var(--font-body-family);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #121212;
+  text-decoration: none;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  transition: color 0.2s ease;
+}
+
+.cart-item__name:hover {
+  color: var(--header-accent-color, #cf7238);
+}
+
+.cart-item__details .product-option {
+  font-family: var(--font-body-family);
+  font-size: 1.55rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-top: 0.4rem;
+}
+
+/* Rounded Pill Quantity Selector */
+.quantity.cart-quantity {
+  border-radius: 9999px;
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  background-color: #ffffff;
+  height: 4.4rem;
+  min-height: 4.4rem;
+  width: 12.5rem;
+  overflow: hidden;
+  box-shadow: none;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quantity.cart-quantity:focus-within {
+  border-color: var(--header-accent-color, #cf7238);
+  box-shadow: 0 0 0 1px var(--header-accent-color, #cf7238);
+}
+
+.quantity.cart-quantity::after,
+.quantity.cart-quantity::before {
+  display: none;
+}
+
+.quantity.cart-quantity .quantity__button {
+  width: 3.8rem;
+  height: 100%;
+  color: #121212;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.quantity.cart-quantity .quantity__button:hover {
+  color: var(--header-accent-color, #cf7238);
+  background-color: rgba(207, 114, 56, 0.08);
+}
+
+.quantity.cart-quantity .quantity__input {
+  font-family: var(--font-body-family);
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: #121212;
+  text-align: center;
+  border: none;
+  background: transparent;
+}
+
+/* Remove / Trash Button */
+cart-remove-button .button {
+  border-radius: 9999px;
+  width: 4.2rem;
+  height: 4.2rem;
+  min-width: 4.2rem;
+  min-height: 4.2rem;
+  background-color: #f3f4f6;
+  color: #6b7280;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-left: 0.8rem;
+}
+
+cart-remove-button .button:hover {
+  background-color: #fee2e2;
+  color: #ef4444;
+  transform: scale(1.08);
+}
+
+cart-remove-button .button::before,
+cart-remove-button .button::after {
+  display: none;
+}
+
+/* Cart Item Total Line Price */
+.cart-item__totals .price {
+  font-family: var(--font-body-family);
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #121212;
+  letter-spacing: -0.01em;
+}
+
