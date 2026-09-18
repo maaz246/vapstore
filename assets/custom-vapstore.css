@@ -2903,6 +2903,10 @@ media-gallery .product__media-icon {
   opacity: 0 !important;
 }
 
+.custom-accordion-item.is-open .custom-accordion-title {
+  color: var(--header-accent-color, #cf7238) !important;
+}
+
 .custom-accordion-content {
   max-height: 0;
   opacity: 0;
@@ -2937,4 +2941,128 @@ media-gallery .product__media-icon {
 
 .custom-accordion-body p+p {
   margin-top: 0.5rem !important;
+}
+
+/* Custom Accordion Description (Tab 1) */
+.custom-accordion-body .custom-accordion-description {
+  margin: 0 0 1.15rem 0 !important;
+  font-family: 'Urbanist', sans-serif !important;
+}
+
+.custom-accordion-body .custom-accordion-description h1,
+.custom-accordion-body .custom-accordion-description h2,
+.custom-accordion-body .custom-accordion-description h3,
+.custom-accordion-body .custom-accordion-description h4,
+.custom-accordion-body .custom-accordion-description h5,
+.custom-accordion-body .custom-accordion-description h6 {
+  font-family: 'Urbanist', sans-serif !important;
+  font-size: 1.55rem !important;
+  font-weight: 800 !important;
+  color: #121212 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.3 !important;
+  margin: 0 0 0.65rem 0 !important;
+}
+
+.custom-accordion-body .custom-accordion-description p {
+  font-family: 'Urbanist', sans-serif !important;
+  font-size: 1.4rem !important;
+  font-weight: 500 !important;
+  line-height: 1.6 !important;
+  color: #4b5563 !important;
+  margin: 0 0 0.85rem 0 !important;
+}
+
+.custom-accordion-body .custom-accordion-description p:last-child {
+  margin-bottom: 0 !important;
+}
+
+.custom-accordion-body .custom-accordion-description p strong,
+.custom-accordion-body .custom-accordion-description p b {
+  font-family: 'Urbanist', sans-serif !important;
+  font-weight: 700 !important;
+  color: #121212 !important;
+  font-size: inherit !important;
+}
+
+.custom-accordion-body .custom-accordion-description p > strong:only-child,
+.custom-accordion-body .custom-accordion-description p:first-child strong {
+  font-size: 1.55rem !important;
+  font-weight: 800 !important;
+  color: #121212 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.01em !important;
+  display: inline-block !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.custom-accordion-body .custom-accordion-description a {
+  color: #121212 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+  font-size: inherit !important;
+  font-weight: 600 !important;
+  transition: color 0.2s ease !important;
+}
+
+.custom-accordion-body .custom-accordion-description a:hover {
+  color: var(--header-accent-color, #cf7238) !important;
+}
+
+.custom-accordion-body .custom-accordion-description ul,
+.custom-accordion-body .custom-accordion-description ol {
+  padding-left: 1.4rem !important;
+  margin: 0.6rem 0 0.85rem 0 !important;
+}
+
+.custom-accordion-body .custom-accordion-description li {
+  font-family: 'Urbanist', sans-serif !important;
+  font-size: 1.4rem !important;
+  line-height: 1.6 !important;
+  color: #4b5563 !important;
+  margin: 0 0 0.35rem 0 !important;
+}
+
+.custom-accordion-body .custom-accordion-description img {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 6px !important;
+}
+
+.custom-accordion-body .custom-accordion-description table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 0.75rem 0 !important;
+}
+
+.custom-accordion-body .custom-accordion-description table td,
+.custom-accordion-body .custom-accordion-description table th {
+  padding: 0.5rem !important;
+  font-size: 1.3rem !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Custom Accordion Specs Divider & Content */
+.custom-accordion-body .custom-accordion-description + .custom-accordion-specs {
+  border-top: 1px dashed rgba(0, 0, 0, 0.12) !important;
+  padding-top: 0.9rem !important;
+  margin-top: 0.9rem !important;
+}
+
+.custom-accordion-body .custom-accordion-specs {
+  font-family: 'Urbanist', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  line-height: 1.65 !important;
+  letter-spacing: 0.01em !important;
+  color: #000000 !important;
+}
+
+.custom-accordion-body .custom-accordion-specs p,
+.custom-accordion-body .custom-accordion-specs span,
+.custom-accordion-body .custom-accordion-specs div {
+  font-size: 11px !important;
+  line-height: 1.65 !important;
+  color: #000000 !important;
 }

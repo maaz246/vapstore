@@ -8,6 +8,11 @@
 {% endcomment %}
 
 {%- liquid
+  assign show_description = block.settings.show_description
+  if show_description == nil
+    assign show_description = true
+  endif
+
   assign heading_1 = block.settings.heading_1 | default: 'Dimensions & Specifications'
   assign heading_2 = block.settings.heading_2 | default: 'Warranty & Replacement'
   assign heading_3 = block.settings.heading_3 | default: 'Shipping Details'
@@ -37,16 +42,28 @@
     </button>
     <div class="custom-accordion-content">
       <div class="custom-accordion-body">
+        {%- if show_description and product.description != blank -%}
+          <div class="custom-accordion-description rte">
+            {{ product.description }}
+          </div>
+        {%- endif -%}
+
         {%- if meta_dim.value != blank -%}
-          {%- if meta_dim.type contains 'rich_text' -%}
-            {{ meta_dim | metafield_tag }}
-          {%- else -%}
-            {{ meta_dim.value | newline_to_br }}
-          {%- endif -%}
+          <div class="custom-accordion-specs">
+            {%- if meta_dim.type contains 'rich_text' -%}
+              {{ meta_dim | metafield_tag }}
+            {%- else -%}
+              {{ meta_dim.value | newline_to_br }}
+            {%- endif -%}
+          </div>
         {%- elsif meta_dim != blank -%}
-          {{ meta_dim | newline_to_br }}
-        {%- else -%}
-          <p>{{ sample_dim }}</p>
+          <div class="custom-accordion-specs">
+            {{ meta_dim | newline_to_br }}
+          </div>
+        {%- elsif sample_dim != blank -%}
+          <div class="custom-accordion-specs">
+            <p>{{ sample_dim }}</p>
+          </div>
         {%- endif -%}
       </div>
     </div>
